@@ -1,0 +1,55 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:vm="using:PlayerServer.ViewModels"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:ctrls="clr-namespace:FluentAvalonia.UI.Controls;assembly=FluentAvalonia"
+        mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+        x:Class="PlayerServer.Views.MainWindow"
+        x:DataType="vm:MainWindowViewModel"
+        Icon="/Assets/avalonia-logo.ico"
+        Title="{DynamicResource ApplicationNameString}"
+        Width="800" Height="600"
+        MinWidth="550" MinHeight="600"
+        WindowStartupLocation="CenterScreen">
+
+    <Design.DataContext>
+        <!-- This only sets the DataContext for the previewer in an IDE,
+             to set the actual DataContext for runtime, set the DataContext property in code (look at App.axaml.cs) -->
+        <vm:MainWindowViewModel />
+    </Design.DataContext>
+
+    <ctrls:NavigationView
+        Name="MainNavigationView"
+        AlwaysShowHeader="False"
+        IsPaneOpen="False"
+        IsPaneToggleButtonVisible="True"
+        IsSettingsVisible="False"
+        OpenPaneLength="150"
+        PaneDisplayMode="Auto"
+        SelectionChanged="MainNavigationSelectionChanged">
+        <ctrls:NavigationView.MenuItems>
+            <!-- todo 这里添加一个连接按钮 -->
+            <ctrls:NavigationViewItem
+                Content="{DynamicResource ServerString}"
+                IconSource="Cloud"
+                IsSelected="True"
+                Tag="ServerView" />
+            <ctrls:NavigationViewItemHeader Margin="0,10,0,0" Content="{DynamicResource ClientTitleString}" />
+            <ctrls:NavigationViewItem
+                Content="{DynamicResource ClientString}"
+                IconSource="Remote"
+                Tag="ClientView" />
+        </ctrls:NavigationView.MenuItems>
+        <ctrls:NavigationView.FooterMenuItems>
+            <!-- todo 这里添加一个主题切换按钮 -->
+            <ctrls:NavigationViewItem
+                Content="{DynamicResource SettingString}"
+                IconSource="Setting"
+                Tag="SettingView" />
+        </ctrls:NavigationView.FooterMenuItems>
+        <ctrls:NavigationView.Content>
+            <ctrls:Frame x:Name="ContentFrame" />
+        </ctrls:NavigationView.Content>
+    </ctrls:NavigationView>
+</Window>

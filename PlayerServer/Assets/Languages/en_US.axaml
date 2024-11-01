@@ -1,0 +1,27 @@
+<ResourceDictionary
+    xmlns="https://github.com/avaloniaui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:system="clr-namespace:System;assembly=mscorlib">
+    <system:String x:Key="ApplicationNameString">Player Server</system:String>
+    <system:String x:Key="ServerTitleString">Server</system:String>
+    <system:String x:Key="ServerString">Server Configuration</system:String>
+    <system:String x:Key="ClientTitleString">Client</system:String>
+    <system:String x:Key="ClientString">Client Information</system:String>
+    <system:String x:Key="SettingString">Settings</system:String>
+    <system:String x:Key="LoggerString">Log</system:String>
+    <system:String x:Key="ServerConfigureString">Server Configuration</system:String>
+    <system:String x:Key="ServerConfigureDescriptionString">Configure the server</system:String>
+    <system:String x:Key="ServerStateString">Server Status</system:String>
+    <system:String x:Key="ServerStateDescriptionString">Running status</system:String>
+    <system:String x:Key="ServerStartString">Start Server</system:String>
+    <system:String x:Key="ServerRunningStateString">Running Status</system:String>
+    <system:String x:Key="ServerIsNotRunningString">Server is not running</system:String>
+    <system:String x:Key="ServerIsRunningString">Server is running</system:String>
+    <system:String x:Key="IpAddressString">IP Address</system:String>
+    <system:String x:Key="PortNumberString">Port</system:String>
+    <system:String x:Key="ProtocolString">Protocol</system:String>
+    <system:String x:Key="EnableString">Enable</system:String>
+    <system:String x:Key="DisableString">Disable</system:String>
+    <system:String x:Key="ThemeString">Theme</system:String>
+    <system:String x:Key="ThemeDescriptionString">Configure theme colors</system:String>
+</ResourceDictionary>

@@ -1,0 +1,27 @@
+<ResourceDictionary
+    xmlns="https://github.com/avaloniaui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:system="clr-namespace:System;assembly=mscorlib">
+    <system:String x:Key="ApplicationNameString">Player Server</system:String>
+    <system:String x:Key="ServerTitleString">服务端</system:String>
+    <system:String x:Key="ServerString">服务端配置</system:String>
+    <system:String x:Key="ClientTitleString">客户端</system:String>
+    <system:String x:Key="ClientString">客户端信息</system:String>
+    <system:String x:Key="SettingString">设置</system:String>
+    <system:String x:Key="LoggerString">日志</system:String>
+    <system:String x:Key="ServerConfigureString">服务端配置</system:String>
+    <system:String x:Key="ServerConfigureDescriptionString">配置服务端</system:String>
+    <system:String x:Key="ServerStateString">服务端状态</system:String>
+    <system:String x:Key="ServerStateDescriptionString">运行状态</system:String>
+    <system:String x:Key="ServerStartString">启动</system:String>
+    <system:String x:Key="ServerRunningStateString">运行状态</system:String>
+    <system:String x:Key="ServerIsNotRunningString">服务端未运行</system:String>
+    <system:String x:Key="ServerIsRunningString">服务端运行中</system:String>
+    <system:String x:Key="IpAddressString">IP 地址</system:String>
+    <system:String x:Key="PortNumberString">端口</system:String>
+    <system:String x:Key="ProtocolString">协议</system:String>
+    <system:String x:Key="EnableString">启用</system:String>
+    <system:String x:Key="DisableString">禁用</system:String>
+    <system:String x:Key="ThemeString">主题</system:String>
+    <system:String x:Key="ThemeDescriptionString">配置主题颜色</system:String>
+</ResourceDictionary>

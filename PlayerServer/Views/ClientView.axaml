@@ -1,0 +1,45 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="using:PlayerServer.ViewModels"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:Class="PlayerServer.Views.ClientView"
+             x:DataType="vm:ClientViewModel">
+    <Design.DataContext>
+        <!-- This only sets the DataContext for the previewer in an IDE,
+             to set the actual DataContext for runtime, set the DataContext property in code (look at App.axaml.cs) -->
+        <vm:ClientViewModel />
+    </Design.DataContext>
+
+    <Grid RowDefinitions="Auto,*">
+        <ScrollViewer Grid.Row="1" HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto">
+            <StackPanel Margin="20">
+                <StackPanel x:Name="ClientStackPanel" />
+                <ItemsControl x:Name="ClientItemsControl" ItemsSource="{Binding Clients}">
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate DataType="vm:ClientViewModel">
+                            <Expander Header="{Binding Header}" IsExpanded="True">
+                                <Grid RowDefinitions="Auto,Auto,Auto" ColumnDefinitions="Auto,*,Auto">
+                                    <Label Content="IP" Grid.Row="0" Grid.Column="0" Margin="5" />
+                                    <TextBox Text="{Binding Ip}" Grid.Row="0" Grid.Column="1" Margin="5"
+                                             IsReadOnly="True" />
+                                    <Button Content="复制" Grid.Row="0" Grid.Column="2" Margin="5" />
+
+                                    <Label Content="端口" Grid.Row="1" Grid.Column="0" Margin="5" />
+                                    <TextBox Text="{Binding Port}" Grid.Row="1" Grid.Column="1" Margin="5" />
+                                    <Button Content="复制" Grid.Row="1" Grid.Column="2" Margin="5" />
+
+                                    <Label Content="连接时间" Grid.Row="2" Grid.Column="0" Margin="5" />
+                                    <TextBox Text="{Binding ConnectionTime}" Grid.Row="2" Grid.Column="1" Margin="5"
+                                             IsReadOnly="True" />
+                                    <Button Content="复制" Grid.Row="2" Grid.Column="2" Margin="5" />
+                                </Grid>
+                            </Expander>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+            </StackPanel>
+        </ScrollViewer>
+    </Grid>
+</UserControl>
