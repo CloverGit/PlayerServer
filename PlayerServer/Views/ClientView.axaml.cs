@@ -1,4 +1,7 @@
 using Avalonia.Controls;
+using Avalonia.Input;
+using Avalonia.Interactivity;
+using PlayerServer.ViewModels;
 
 namespace PlayerServer.Views;
 
@@ -10,20 +13,19 @@ public partial class ClientView : UserControl
         // DataContext = new ClientViewModel();
     }
 
-    /*
-     private void UpdateClientList(List<Client> clients)
+    private async void CopyButton_Click(object? sender, RoutedEventArgs args)
     {
-        Dispatcher.UIThread.Post(() =>
-        {
-            ClientItemsControl.ItemsSource = clients.ConvertAll(client => new ClientViewModel
-            {
-                Header = client.Id,
-                Name = client.Name,
-                Ip = client.EndPoint.Address.ToString(),
-                Port = client.EndPoint.Port.ToString(),
-                ConnectionTime = client.ConnectionTime.ToString(CultureInfo.CurrentCulture)
-            });
-        });
+        var clipboard = TopLevel.GetTopLevel(this)?.Clipboard;
+        // 剪贴板不可用
+        if (clipboard is null) return;
+
+        if (sender is not Button { DataContext: ClientViewModel client } button) return;
+        if (button.CommandParameter is not string propertyName) return;
+        var propertyInfo = client.GetType().GetProperty(propertyName);
+        var value = propertyInfo?.GetValue(client) as string ?? string.Empty;
+
+        var dataObject = new DataObject();
+        dataObject.Set(DataFormats.Text, value);
+        await clipboard.SetDataObjectAsync(dataObject);
     }
-    */
 }
