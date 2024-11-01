@@ -5,15 +5,17 @@ using PlayerServer.Helpers;
 
 namespace PlayerServer.Models;
 
-public class Message(List<string> ids)
+public class Message(string fromId, List<string> toIds)
 {
-    private Message() : this([])
+    private Message() : this(string.Empty, [])
     {
     }
 
     public string? Type { get; private set; }
     public string? Extra { get; private set; }
-    public List<string> Ids { get; private set; } = ids;
+    public List<string> ToIds { get; private set; } = toIds;
+
+    public string FromId { get; set; } = fromId;
 
     public static Message? FromJson(string jsonData)
     {
@@ -21,18 +23,19 @@ public class Message(List<string> ids)
         {
             var messageData = JsonSerializer.Deserialize<Dictionary<string, JsonElement>>(jsonData);
 
-            if (messageData == null || !messageData.TryGetValue("type", out var typeElement))
-                return null;
+            if (messageData == null) return null;
 
             var message = new Message
             {
-                Type = typeElement.GetString(),
-                Extra = messageData.TryGetValue("extra", out var value) ? value.GetString() : null,
-                Ids = messageData.TryGetValue("id", out var idElement) && idElement.ValueKind == JsonValueKind.Array
+                Type = messageData.TryGetValue("type", out var type) ? type.GetString() : null,
+                Extra = messageData.TryGetValue("extra", out var extra) ? extra.GetString() : null,
+                ToIds = messageData.TryGetValue("toId", out var toIds) && toIds.ValueKind == JsonValueKind.Array
                     // 使用 Where 来过滤 null 值将产生一个警告
-                    // ? idElement.EnumerateArray().Select(id => id.GetString()).Where(id => id != null).ToList()
-                    ? idElement.EnumerateArray().Select(id => id.GetString() ?? string.Empty).ToList()
-                    : []
+                    // ? toIds.EnumerateArray().Select(id => id.GetString()).Where(id => id != null).ToList()
+                    ? toIds.EnumerateArray().Select(id => id.GetString() ?? string.Empty).ToList()
+                    : [],
+                FromId = (messageData.TryGetValue("fromId", out var fromIds) ? fromIds.GetString() : null) ??
+                         string.Empty
             };
 
             return message;
@@ -49,7 +52,8 @@ public class Message(List<string> ids)
         return JsonSerializer.Serialize(new
         {
             type = Type,
-            extra = Extra
+            extra = Extra,
+            fromId = FromId
         });
     }
 }

@@ -68,22 +68,21 @@ public class MessageService(ClientManagerService clientManager)
 
     private string HandleClientRegistration(Message message, Client senderClient)
     {
-        if (message.Ids.Count == 0)
+        if (message.FromId == string.Empty)
             return "Invalid registration message";
 
-        // 只注册第一个 ID
-        senderClient.Id = message.Ids[0];
+        senderClient.Id = message.FromId;
         clientManager.RegisterClient(senderClient);
         return $"Client registered with ID: {senderClient.Id}";
     }
 
     private string HandleMessageForwarding(Message message)
     {
-        if (message.Ids.Count == 0)
+        if (message.ToIds.Count == 0)
             return "Invalid forward message";
 
-        foreach (var recipientId in message.Ids)
-            ForwardMessage(message, recipientId);
+        foreach (var toId in message.ToIds)
+            ForwardMessage(message, toId);
 
         return "All messages have been forwarded";
     }
