@@ -90,9 +90,10 @@
                     <!-- 协议选择 -->
                     <ctrls:SettingsExpanderItem Content="{DynamicResource ProtocolString}">
                         <ctrls:SettingsExpanderItem.Footer>
-                            <ComboBox x:Name="ProtocolComboBox"
-                                      ItemsSource="{Binding SupportProtocols}"
-                                      SelectedItem="{Binding SelectedProtocol, Mode=TwoWay}" SelectedIndex="0" />
+                            <WrapPanel>
+                                <CheckBox Content="TCP" Margin="4" IsChecked="{Binding IsTcpChecked}" />
+                                <CheckBox Content="UDP" Margin="4" IsChecked="{Binding IsUdpChecked}" />
+                            </WrapPanel>
                         </ctrls:SettingsExpanderItem.Footer>
                     </ctrls:SettingsExpanderItem>
 

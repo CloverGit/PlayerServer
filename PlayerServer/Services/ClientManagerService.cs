@@ -27,6 +27,7 @@ public class ClientManagerService
             Logger.LogMessage($"新增客户端 ID: {client.Id}");
             Logger.LogMessage($"地址: {client.EndPoint.Address}");
             Logger.LogMessage($"端口: {client.EndPoint.Port}");
+            Logger.LogMessage($"协议: {client.Protocol}");
             NotifyClientUpdate();
         }
 

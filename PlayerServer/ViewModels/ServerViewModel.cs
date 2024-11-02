@@ -1,5 +1,5 @@
 using System;
-using System.Collections.ObjectModel;
+using System.Collections.Generic;
 using System.Net;
 using System.Net.Sockets;
 using PlayerServer.Services;
@@ -9,27 +9,17 @@ namespace PlayerServer.ViewModels;
 
 public class ServerViewModel : ViewModelBase
 {
+    // 默认选中 TCP UDP
+    private readonly HashSet<ServerService.Protocol> _selectedProtocols =
+        [ServerService.Protocol.Tcp, ServerService.Protocol.Udp];
+
     private readonly ServerService _serverService = new();
 
-    private string _logMessages;
+    private string _logMessages = string.Empty;
 
-    private string _selectedProtocol;
-
-    private int _serverPort;
+    // 1346 为默认测试端口
+    private int _serverPort = 1346;
     private bool _serverRunningState;
-
-    public ServerViewModel()
-    {
-        SupportProtocols = ["TCP", "UDP"];
-        // 1346 为默认测试端口
-        _serverPort = 1346;
-        _serverRunningState = false;
-        // 默认选中 TCP
-        _selectedProtocol = SupportProtocols[0];
-        _logMessages = string.Empty;
-        // 获取本地 IP 地址
-        ServerIpAddress = GetLocalIpAddress();
-    }
 
     public string LogMessages
     {
@@ -38,17 +28,6 @@ public class ServerViewModel : ViewModelBase
         {
             if (_logMessages == value) return;
             _logMessages = value;
-            OnPropertyChanged();
-        }
-    }
-
-    public string SelectedProtocol
-    {
-        get => _selectedProtocol;
-        set
-        {
-            if (_selectedProtocol == value) return;
-            _selectedProtocol = value;
             OnPropertyChanged();
         }
     }
@@ -83,8 +62,29 @@ public class ServerViewModel : ViewModelBase
     public string ServerRunningStateText =>
         ResourceString.Get(ServerRunningState ? "ServerIsRunningString" : "ServerIsNotRunningString");
 
-    private ObservableCollection<string> SupportProtocols { get; }
-    public string ServerIpAddress { get; }
+    public string ServerIpAddress { get; } = GetLocalIpAddress();
+
+    public bool IsTcpChecked
+    {
+        get => _selectedProtocols.Contains(ServerService.Protocol.Tcp);
+        set
+        {
+            if (value) _selectedProtocols.Add(ServerService.Protocol.Tcp);
+            else _selectedProtocols.Remove(ServerService.Protocol.Tcp);
+            OnPropertyChanged();
+        }
+    }
+
+    public bool IsUdpChecked
+    {
+        get => _selectedProtocols.Contains(ServerService.Protocol.Udp);
+        set
+        {
+            if (value) _selectedProtocols.Add(ServerService.Protocol.Udp);
+            else _selectedProtocols.Remove(ServerService.Protocol.Udp);
+            OnPropertyChanged();
+        }
+    }
 
     private static string GetLocalIpAddress()
     {
@@ -94,13 +94,12 @@ public class ServerViewModel : ViewModelBase
                 return ip.ToString();
         return "undefined";
     }
-    
+
     private void StartServer()
     {
         var port = _serverPort;
-        var protocol = _selectedProtocol == "TCP" ? ServerService.Protocol.Tcp : ServerService.Protocol.Udp;
-
-        _serverService.Start(protocol, port);
+        foreach (var protocol in _selectedProtocols)
+            _serverService.Start(protocol, port);
     }
 
     private void StopServer()
