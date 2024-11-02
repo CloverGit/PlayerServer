@@ -13,12 +13,12 @@ public class MessageService(ClientManagerService clientManager)
 
         switch (recipientClient.Protocol)
         {
-            case ServerService.Protocol.Tcp when recipientClient.ProtocolClient is TcpClient tcpClient:
+            case ServerService.Protocol.TCP when recipientClient.ProtocolClient is TcpClient tcpClient:
                 var stream = tcpClient.GetStream();
                 stream.Write(data, 0, data.Length);
                 break;
 
-            case ServerService.Protocol.Udp when recipientClient.ProtocolClient is UdpClient udpClient:
+            case ServerService.Protocol.UDP when recipientClient.ProtocolClient is UdpClient udpClient:
                 udpClient.Send(data, data.Length, recipientClient.EndPoint);
                 break;
 

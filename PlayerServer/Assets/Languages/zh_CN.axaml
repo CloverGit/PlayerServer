@@ -24,4 +24,6 @@
     <system:String x:Key="DisableString">禁用</system:String>
     <system:String x:Key="ThemeString">主题</system:String>
     <system:String x:Key="ThemeDescriptionString">配置主题颜色</system:String>
+    <system:String x:Key="InvalidPortString">无效的端口号</system:String>
+    <system:String x:Key="NoProtocolSelectedString">未选择协议</system:String>
 </ResourceDictionary>

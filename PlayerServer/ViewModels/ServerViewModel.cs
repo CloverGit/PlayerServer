@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Net;
 using System.Net.Sockets;
+using PlayerServer.Helpers;
 using PlayerServer.Services;
 using PlayerServer.Utilities;
 
@@ -11,7 +12,7 @@ public class ServerViewModel : ViewModelBase
 {
     // 默认选中 TCP UDP
     private readonly HashSet<ServerService.Protocol> _selectedProtocols =
-        [ServerService.Protocol.Tcp, ServerService.Protocol.Udp];
+        [ServerService.Protocol.TCP, ServerService.Protocol.UDP];
 
     private readonly ServerService _serverService = new();
 
@@ -66,22 +67,22 @@ public class ServerViewModel : ViewModelBase
 
     public bool IsTcpChecked
     {
-        get => _selectedProtocols.Contains(ServerService.Protocol.Tcp);
+        get => _selectedProtocols.Contains(ServerService.Protocol.TCP);
         set
         {
-            if (value) _selectedProtocols.Add(ServerService.Protocol.Tcp);
-            else _selectedProtocols.Remove(ServerService.Protocol.Tcp);
+            if (value) _selectedProtocols.Add(ServerService.Protocol.TCP);
+            else _selectedProtocols.Remove(ServerService.Protocol.TCP);
             OnPropertyChanged();
         }
     }
 
     public bool IsUdpChecked
     {
-        get => _selectedProtocols.Contains(ServerService.Protocol.Udp);
+        get => _selectedProtocols.Contains(ServerService.Protocol.UDP);
         set
         {
-            if (value) _selectedProtocols.Add(ServerService.Protocol.Udp);
-            else _selectedProtocols.Remove(ServerService.Protocol.Udp);
+            if (value) _selectedProtocols.Add(ServerService.Protocol.UDP);
+            else _selectedProtocols.Remove(ServerService.Protocol.UDP);
             OnPropertyChanged();
         }
     }
@@ -98,6 +99,18 @@ public class ServerViewModel : ViewModelBase
     private void StartServer()
     {
         var port = _serverPort;
+        if (port is <= 0 or > 65535)
+        {
+            Logger.LogMessage(ResourceString.Get("InvalidPortString"));
+            return;
+        }
+
+        if (_selectedProtocols.Count == 0)
+        {
+            Logger.LogMessage(ResourceString.Get("NoProtocolSelectedString"));
+            return;
+        }
+
         foreach (var protocol in _selectedProtocols)
             _serverService.Start(protocol, port);
     }

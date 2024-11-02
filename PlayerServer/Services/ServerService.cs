@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Net;
 using System.Net.Sockets;
 using System.Text;
@@ -12,62 +13,74 @@ public class ServerService
 {
     public enum Protocol
     {
-        Tcp,
-        Udp
+        TCP,
+        UDP
     }
 
     private static readonly ClientManagerService ClientManagerService = new();
     private static readonly MessageService MessageService = new(ClientManagerService);
 
-    private Protocol? _protocol;
-    private TcpListener TcpListener;
-    private UdpClient UdpClient;
+    private readonly HashSet<Protocol> _protocols = [];
+    private TcpListener? _tcpListener;
+    private UdpClient? _udpClient;
 
     public bool Start(Protocol protocol, int port)
     {
-        _protocol = protocol;
-
-        switch (protocol)
+        _protocols.Add(protocol);
+        try
         {
-            case Protocol.Tcp:
-                TcpListener = new TcpListener(IPAddress.Any, port);
-                TcpListener.Start();
-                Task.Run(ListenForTcpConnections);
-                Logger.LogMessage($"TCP 服务端已启动，侦听端口: {port}");
-                return true;
-            case Protocol.Udp:
-                UdpClient = new UdpClient(port);
-                Task.Run(ListenForUdpData);
-                Logger.LogMessage($"UDP 服务端已启动，侦听端口: {port}");
-                return true;
-            default:
-                return false;
+            switch (protocol)
+            {
+                case Protocol.TCP:
+                    _tcpListener = new TcpListener(IPAddress.Any, port);
+                    _tcpListener.Start();
+                    Task.Run(ListenForTcpConnections);
+                    Logger.LogMessage($"{protocol} 服务已启动，侦听端口: {port}");
+                    return true;
+                case Protocol.UDP:
+                    _udpClient = new UdpClient(port);
+                    Task.Run(ListenForUdpData);
+                    Logger.LogMessage($"{protocol} 服务已启动，侦听端口: {port}");
+                    return true;
+                default:
+                    return false;
+            }
+        }
+        catch (Exception e)
+        {
+            Logger.LogMessage($"{protocol} 服务启动失败:");
+            Logger.LogMessage(e.Message);
+            return false;
         }
     }
 
     public void Stop()
     {
-        switch (_protocol)
+        foreach (var protocol in _protocols)
         {
-            case Protocol.Tcp:
+            switch (protocol)
             {
-                TcpListener.Stop();
-                foreach (var client in ClientManagerService.GetAllClients())
-                    if (client.ProtocolClient is TcpClient tcpClient)
-                        tcpClient.Close();
-                break;
+                case Protocol.TCP:
+                {
+                    _tcpListener?.Stop();
+                    foreach (var client in ClientManagerService.GetAllClients())
+                        if (client.ProtocolClient is TcpClient tcpClient)
+                            tcpClient.Close();
+                    Logger.LogMessage($"{protocol} 服务已停止");
+                    break;
+                }
+                case Protocol.UDP:
+                    _udpClient?.Close();
+                    Logger.LogMessage($"{protocol} 服务已停止");
+                    break;
+                default:
+                    Logger.LogMessage("未知的协议类型");
+                    break;
             }
-            case Protocol.Udp:
-                UdpClient.Close();
-                break;
-            default:
-                Logger.LogMessage("未知的协议类型");
-                break;
-        }
 
-        ClientManagerService.RemoveAllClients();
-        Logger.ClearLog();
-        Logger.LogMessage("服务端已停止");
+            _protocols.Remove(protocol);
+            ClientManagerService.RemoveAllClients();
+        }
     }
 
     private async Task ListenForTcpConnections()
@@ -76,18 +89,19 @@ public class ServerService
         {
             while (true)
             {
-                var tcpClient = await TcpListener.AcceptTcpClientAsync();
+                if (_tcpListener == null) continue;
+                var tcpClient = await _tcpListener.AcceptTcpClientAsync();
 
                 if (tcpClient.Client.RemoteEndPoint is not IPEndPoint remoteEndPoint)
                     throw new InvalidOperationException("RemoteEndPoint is not a valid IPEndPoint");
-                var client = new Client(new Connection(Protocol.Tcp, remoteEndPoint, tcpClient));
+                var client = new Client(new Connection(Protocol.TCP, remoteEndPoint, tcpClient));
                 _ = Task.Run(() => ReadTcpData(client));
                 Logger.LogMessage($"新增 TCP 客户端连接: {client.EndPoint.Address}");
             }
         }
         catch (SocketException ex) when (ex.SocketErrorCode == SocketError.OperationAborted)
         {
-            Logger.LogMessage("监听器已关闭");
+            Logger.LogMessage("TCP 监听器已关闭");
         }
         catch (Exception e)
         {
@@ -137,17 +151,18 @@ public class ServerService
             // var endpoint = new IPEndPoint(IPAddress.Any, _port);
             while (true)
             {
-                var result = await UdpClient.ReceiveAsync();
+                if (_udpClient == null) continue;
+                var result = await _udpClient.ReceiveAsync();
                 var data = Encoding.UTF8.GetString(result.Buffer);
                 Logger.LogMessage($"接收 (UDP): {data}");
-                var connection = new Connection(Protocol.Udp, result.RemoteEndPoint, UdpClient);
+                var connection = new Connection(Protocol.UDP, result.RemoteEndPoint, _udpClient);
                 var client = new Client(connection);
                 MessageService.ParseMessage(data, client);
             }
         }
         catch (SocketException ex) when (ex.SocketErrorCode == SocketError.OperationAborted)
         {
-            Logger.LogMessage("监听器已关闭");
+            Logger.LogMessage("UDP 监听器已关闭");
         }
         catch (Exception e)
         {

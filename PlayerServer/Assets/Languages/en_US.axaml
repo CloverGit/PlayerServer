@@ -24,4 +24,6 @@
     <system:String x:Key="DisableString">Disable</system:String>
     <system:String x:Key="ThemeString">Theme</system:String>
     <system:String x:Key="ThemeDescriptionString">Configure theme colors</system:String>
+    <system:String x:Key="InvalidPortString">Invalid port number</system:String>
+    <system:String x:Key="NoProtocolSelectedString">No protocol selected</system:String>
 </ResourceDictionary>
