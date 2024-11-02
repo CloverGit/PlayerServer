@@ -14,4 +14,10 @@ public partial class ServerView : UserControl
         DataContext = viewModel;
         Logger.Initialize(viewModel.AppendLogMessage);
     }
+
+    private void LogMessageScrollToEnd(object sender, TextChangedEventArgs e)
+    {
+        if (sender is TextBox { Text: not null } textBox)
+            textBox.CaretIndex = textBox.Text.Length;
+    }
 }

@@ -26,7 +26,7 @@
                     <!--            Margin="30 -25 0 0"/> -->
 
                     <TextBox Text="{Binding LogMessages, Mode=OneWay}" IsReadOnly="True"
-                             AcceptsReturn="True" Height="200" />
+                             AcceptsReturn="True" Height="200" TextChanged="LogMessageScrollToEnd" />
                 </StackPanel>
 
                 <!-- 运行状态 -->
