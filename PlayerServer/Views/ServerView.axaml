@@ -76,7 +76,7 @@
                     <!-- IP 地址-->
                     <ctrls:SettingsExpanderItem Content="{DynamicResource IpAddressString}">
                         <ctrls:SettingsExpanderItem.Footer>
-                            <TextBox x:Name="IpAddress" Text="127.0.0.1" IsEnabled="False" />
+                            <TextBox x:Name="IpAddress" Text="{Binding ServerIpAddress, Mode=OneWay}" IsEnabled="False" />
                         </ctrls:SettingsExpanderItem.Footer>
                     </ctrls:SettingsExpanderItem>
 

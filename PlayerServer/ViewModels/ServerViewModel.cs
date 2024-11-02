@@ -1,5 +1,7 @@
 using System;
 using System.Collections.ObjectModel;
+using System.Net;
+using System.Net.Sockets;
 using PlayerServer.Services;
 using PlayerServer.Utilities;
 
@@ -25,6 +27,8 @@ public class ServerViewModel : ViewModelBase
         // 默认选中 TCP
         _selectedProtocol = SupportProtocols[0];
         _logMessages = string.Empty;
+        // 获取本地 IP 地址
+        ServerIpAddress = GetLocalIpAddress();
     }
 
     public string LogMessages
@@ -79,8 +83,18 @@ public class ServerViewModel : ViewModelBase
     public string ServerRunningStateText =>
         ResourceString.Get(ServerRunningState ? "ServerIsRunningString" : "ServerIsNotRunningString");
 
-    public ObservableCollection<string> SupportProtocols { get; }
+    private ObservableCollection<string> SupportProtocols { get; }
+    public string ServerIpAddress { get; }
 
+    private static string GetLocalIpAddress()
+    {
+        var host = Dns.GetHostEntry(Dns.GetHostName());
+        foreach (var ip in host.AddressList)
+            if (ip.AddressFamily == AddressFamily.InterNetwork)
+                return ip.ToString();
+        return "undefined";
+    }
+    
     private void StartServer()
     {
         var port = _serverPort;
