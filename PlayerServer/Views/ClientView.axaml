@@ -25,20 +25,20 @@
                                     <TextBox Text="{Binding Ip}" Grid.Row="0" Grid.Column="1" Margin="5"
                                              IsReadOnly="True" />
                                     <Button Content="复制" Grid.Row="0" Grid.Column="2" Margin="5"
-                                            Click="CopyButton_Click"
+                                            Command="{Binding CopyCommand}"
                                             CommandParameter="Ip" />
 
                                     <Label Content="端口" Grid.Row="1" Grid.Column="0" Margin="5" />
                                     <TextBox Text="{Binding Port}" Grid.Row="1" Grid.Column="1" Margin="5" />
                                     <Button Content="复制" Grid.Row="1" Grid.Column="2" Margin="5"
-                                            Click="CopyButton_Click"
+                                            Command="{Binding CopyCommand}"
                                             CommandParameter="Port" />
 
                                     <Label Content="连接时间" Grid.Row="2" Grid.Column="0" Margin="5" />
                                     <TextBox Text="{Binding ConnectionTime}" Grid.Row="2" Grid.Column="1" Margin="5"
                                              IsReadOnly="True" />
                                     <Button Content="复制" Grid.Row="2" Grid.Column="2" Margin="5"
-                                            Click="CopyButton_Click"
+                                            Command="{Binding CopyCommand}"
                                             CommandParameter="ConnectionTime" />
                                 </Grid>
                             </Expander>
