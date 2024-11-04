@@ -25,12 +25,7 @@ public class ServerViewModel : ViewModelBase
     public string LogMessages
     {
         get => _logMessages;
-        private set
-        {
-            if (_logMessages == value) return;
-            _logMessages = value;
-            OnPropertyChanged();
-        }
+        private set => SetProperty(ref _logMessages, value);
     }
 
     public string ServerPort
@@ -39,9 +34,7 @@ public class ServerViewModel : ViewModelBase
         set
         {
             if (!int.TryParse(value, out var port)) return;
-            if (_serverPort == port) return;
-            _serverPort = port;
-            OnPropertyChanged();
+            SetProperty(ref _serverPort, port);
         }
     }
 
@@ -50,9 +43,7 @@ public class ServerViewModel : ViewModelBase
         get => _serverRunningState;
         set
         {
-            if (_serverRunningState == value) return;
-            _serverRunningState = value;
-            OnPropertyChanged();
+            SetProperty(ref _serverRunningState, value);
             OnPropertyChanged(nameof(ServerRunningStateText));
 
             if (_serverRunningState) StartServer();
