@@ -26,4 +26,12 @@
     <system:String x:Key="ThemeDescriptionString">配置主题颜色</system:String>
     <system:String x:Key="InvalidPortString">无效的端口号</system:String>
     <system:String x:Key="NoProtocolSelectedString">未选择协议</system:String>
+    <system:String x:Key="CopyString">复制</system:String>
+    <system:String x:Key="CopyTipString">复制</system:String>
+    <system:String x:Key="SaveString">保存</system:String>
+    <system:String x:Key="SaveTipString ">保存</system:String>
+    <system:String x:Key="ClearString">清除</system:String>
+    <system:String x:Key="ClearTipString">清除</system:String>
+    <system:String x:Key="AutoScrollString">自动滚动</system:String>
+    <system:String x:Key="ShowTimeString">显示时间</system:String>
 </ResourceDictionary>

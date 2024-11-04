@@ -78,6 +78,8 @@ public class ServerViewModel : ViewModelBase
         }
     }
 
+    public event Action? RequestCloseFlyout;
+
     private static string GetLocalIpAddress()
     {
         var host = Dns.GetHostEntry(Dns.GetHostName());
@@ -109,6 +111,24 @@ public class ServerViewModel : ViewModelBase
     private void StopServer()
     {
         _serverService.Stop();
+    }
+
+    public void LogMessageClearCommand()
+    {
+        AppendLogMessage(string.Empty);
+        RequestCloseFlyout?.Invoke();
+    }
+
+    public void LogMessageSaveCommand()
+    {
+        // todo
+        RequestCloseFlyout?.Invoke();
+    }
+
+    public void LogMessageCopyCommand()
+    {
+        _ = Clipboard.SetText(LogMessages);
+        RequestCloseFlyout?.Invoke();
     }
 
     public void AppendLogMessage(string message)

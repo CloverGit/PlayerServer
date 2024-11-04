@@ -13,6 +13,38 @@
         <vm:ServerViewModel />
     </Design.DataContext>
 
+    <UserControl.Resources>
+        <ctrls:CommandBarFlyout Placement="Pointer" x:Key="LogMessageFlyout">
+            <ctrls:CommandBarButton
+                Label="{DynamicResource CopyString}"
+                IconSource="Copy"
+                ToolTip.Tip="{DynamicResource CopyTipString}"
+                Command="{Binding LogMessageCopyCommand}" />
+            <ctrls:CommandBarButton
+                Label="{DynamicResource SaveString}"
+                IconSource="Save"
+                ToolTip.Tip="{DynamicResource SaveTipString}"
+                Command="{Binding LogMessageSaveCommand}" />
+            <ctrls:CommandBarButton
+                Label="{DynamicResource ClearString}"
+                IconSource="Delete"
+                ToolTip.Tip="{DynamicResource ClearTipString}"
+                Command="{Binding LogMessageClearCommand}" />
+            <!-- <ctrls:CommandBarFlyout.SecondaryCommands> -->
+            <!--     <ctrls:CommandBarButton Label="{DynamicResource AutoScrollString}" /> -->
+            <!--     <ctrls:CommandBarButton Label="{DynamicResource ShowTimeString}" /> -->
+            <!--     <ctrls:CommandBarElementContainer> -->
+            <!--         ~1~ <ctrls:RadioMenuFlyoutItem @1@ -->
+            <!--         ~1~     Text="{DynamicResource AutoScrollString}" @1@ -->
+            <!--         ~1~     IsChecked="{Binding IsAutoScrollChecked, Mode=TwoWay}" /> @1@ -->
+            <!--         ~1~ <ctrls:RadioMenuFlyoutItem @1@ -->
+            <!--         ~1~     Text="{DynamicResource ShowTimeString}" @1@ -->
+            <!--         ~1~     IsChecked="{Binding IsShowTimeChecked, Mode=TwoWay}" /> @1@ -->
+            <!--     </ctrls:CommandBarElementContainer> -->
+            <!-- </ctrls:CommandBarFlyout.SecondaryCommands> -->
+        </ctrls:CommandBarFlyout>
+    </UserControl.Resources>
+
     <Grid RowDefinitions="Auto,*">
         <ScrollViewer Grid.Row="1" HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto">
             <StackPanel Margin="20">
@@ -25,8 +57,9 @@
                     <!-- <TextBlock Text="{DynamicResource ServerConfigureString}" -->
                     <!--            Margin="30 -25 0 0"/> -->
 
-                    <TextBox Text="{Binding LogMessages, Mode=OneWay}" IsReadOnly="True"
-                             AcceptsReturn="True" Height="200" TextChanged="LogMessageScrollToEnd" />
+                    <TextBox Name="LogMessage" Text="{Binding LogMessages, Mode=OneWay}" IsReadOnly="True"
+                             AcceptsReturn="True" Height="200" TextChanged="OnLogMessageTextChanged"
+                             ContextRequested="OnLogMessageContextRequested" />
                 </StackPanel>
 
                 <!-- 运行状态 -->

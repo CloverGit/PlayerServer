@@ -26,4 +26,12 @@
     <system:String x:Key="ThemeDescriptionString">Configure theme colors</system:String>
     <system:String x:Key="InvalidPortString">Invalid port number</system:String>
     <system:String x:Key="NoProtocolSelectedString">No protocol selected</system:String>
+    <system:String x:Key="CopyString">Copy</system:String>
+    <system:String x:Key="CopyTipString">Copy</system:String>
+    <system:String x:Key="SaveString">Save</system:String>
+    <system:String x:Key="SaveTipString ">Save</system:String>
+    <system:String x:Key="ClearString">Clear</system:String>
+    <system:String x:Key="ClearTipString">Clear</system:String>
+    <system:String x:Key="AutoScrollString">Auto Scroll</system:String>
+    <system:String x:Key="ShowTimeString">Show Time</system:String>
 </ResourceDictionary>
