@@ -51,6 +51,7 @@ public class Message(string fromId, List<string> toIds)
     {
         return JsonSerializer.Serialize(new
         {
+            toId = ToIds,
             type = Type,
             extra = Extra,
             fromId = FromId
