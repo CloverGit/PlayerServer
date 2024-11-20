@@ -16,9 +16,9 @@
         <ScrollViewer Grid.Row="1" HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto">
             <StackPanel Margin="20">
                 <StackPanel x:Name="ClientStackPanel" />
-                <ItemsControl x:Name="ClientItemsControl" ItemsSource="{Binding Clients}">
+                <ItemsControl x:Name="ClientItemsControl" ItemsSource="{Binding ClientEntries}">
                     <ItemsControl.ItemTemplate>
-                        <DataTemplate DataType="vm:ClientViewModel">
+                        <DataTemplate DataType="vm:ClientEntryModel">
                             <Expander Header="{Binding Header}" IsExpanded="True">
                                 <Grid RowDefinitions="Auto,Auto,Auto" ColumnDefinitions="Auto,*,Auto">
                                     <Label Content="IP" Grid.Row="0" Grid.Column="0" Margin="5" />
