@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Globalization;
+using Avalonia.Threading;
 using PlayerServer.Models;
 
 namespace PlayerServer.ViewModels;
@@ -19,6 +20,9 @@ public class ClientViewModel : ViewModelBase
 
     private void UpdateClients(List<Client> clients)
     {
+        // 确保在 UI 线程上调用更新方法, 防止条目重复显示
+        Dispatcher.UIThread.InvokeAsync(() =>
+        {
         ClientEntries.Clear();
 
         foreach (var client in clients)
@@ -31,6 +35,7 @@ public class ClientViewModel : ViewModelBase
                 ConnectionTime = client.ConnectionTime.ToString(CultureInfo.CurrentCulture)
             });
         OnPropertyChanged();
+        });
     }
 
     public static void OnClientListUpdated(List<Client> clients)
