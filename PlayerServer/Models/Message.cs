@@ -42,7 +42,7 @@ public class Message(string fromId, List<string> toIds)
         }
         catch (JsonException ex)
         {
-            Logger.LogMessage("Error parsing JSON: {ex.Message}");
+            Logger.LogMessage($"Error parsing JSON: {ex.Message}");
             return null;
         }
     }

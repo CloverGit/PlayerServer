@@ -65,7 +65,7 @@ public class ServerViewModel : ViewModelBase
     }
 
     public string ServerRunningStateText =>
-        ResourceString.Get(ServerRunningState ? "ServerIsRunningString" : "ServerIsNotRunningString");
+        Resource.Get<string>(ServerRunningState ? "ServerIsRunningString" : "ServerIsNotRunningString");
 
     public string ServerIpAddress { get; }
 
@@ -115,13 +115,13 @@ public class ServerViewModel : ViewModelBase
         var port = _serverPort;
         if (port is <= 0 or > 65535)
         {
-            Logger.LogMessage(ResourceString.Get("InvalidPortString"));
+            Logger.LogMessage(Resource.Get<string>("InvalidPortString"));
             return;
         }
 
         if (_selectedProtocols.Count == 0)
         {
-            Logger.LogMessage(ResourceString.Get("NoProtocolSelectedString"));
+            Logger.LogMessage(Resource.Get<string>("NoProtocolSelectedString"));
             return;
         }
 

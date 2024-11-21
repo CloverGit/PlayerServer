@@ -140,6 +140,11 @@ public class ServerService
                 ClientManagerService.RemoveClient(client);
                 Logger.LogMessage($"客户端异常断开: {client.EndPoint.Address}");
             }
+            finally
+            {
+                stream.Close();
+                tcpClient.Close();
+            }
         }
     }
 

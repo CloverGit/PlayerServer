@@ -45,7 +45,7 @@ public class ClientManagerService
         NotifyClientUpdate();
     }
 
-    public Client? GetClientById(string id)
+    public Client? GetClientById(string? id)
     {
         return _clients.Find(client => client.Id == id);
     }
