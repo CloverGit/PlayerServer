@@ -1,8 +1,8 @@
 <Application xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             x:Class="PlayerServer.App"
              xmlns:local="using:PlayerServer"
              xmlns:sty="using:FluentAvalonia.Styling"
+             x:Class="PlayerServer.App"
              RequestedThemeVariant="Default">
     <!-- "Default" ThemeVariant follows system theme variant. "Dark" or "Light" are other available options. -->
 
@@ -22,5 +22,8 @@
     <Application.Styles>
         <!-- <FluentTheme /> -->
         <sty:FluentAvaloniaTheme PreferSystemTheme="True" PreferUserAccentColor="True" />
+        <!-- <Style Selector="TextBlock"> -->
+        <!--     <Setter Property="FontFamily" Value="Microsoft YaHei, Noto Sans CJK SC, Source Han Sans CN" /> -->
+        <!-- </Style> -->
     </Application.Styles>
 </Application>

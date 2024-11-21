@@ -1,7 +1,7 @@
 ﻿using System;
 using Avalonia;
 
-namespace PlayerServer;
+namespace PlayerServer.Desktop;
 
 internal sealed class Program
 {
@@ -20,7 +20,7 @@ internal sealed class Program
     {
         return AppBuilder.Configure<App>()
             .UsePlatformDetect()
-            .WithInterFont()
+            .WithFont_SourceHanSansCN()
             .LogToTrace();
     }
 }
