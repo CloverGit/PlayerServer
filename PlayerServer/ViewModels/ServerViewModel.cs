@@ -10,17 +10,30 @@ namespace PlayerServer.ViewModels;
 
 public class ServerViewModel : ViewModelBase
 {
-    // 默认选中 TCP UDP
-    private readonly HashSet<ServerService.Protocol> _selectedProtocols =
-        [ServerService.Protocol.TCP, ServerService.Protocol.UDP];
+    private readonly HashSet<ServerService.Protocol> _selectedProtocols;
 
-    private readonly ServerService _serverService = new();
+    private readonly ServerService _serverService;
 
-    private string _logMessages = string.Empty;
+    private string _logMessages;
 
-    // 1346 为默认测试端口
-    private int _serverPort = 1346;
+    private int _serverPort;
     private bool _serverRunningState;
+
+    public ServerViewModel()
+    {
+        // 默认选中 TCP UDP
+        _selectedProtocols =
+        [
+            ServerService.Protocol.TCP,
+            ServerService.Protocol.UDP
+        ];
+        _serverService = new ServerService();
+        _logMessages = string.Empty;
+        // 1346 为默认测试端口
+        _serverPort = 1346;
+        ServerRunningState = false;
+        ServerIpAddress = GetLocalIpAddress();
+    }
 
     public string LogMessages
     {
@@ -54,7 +67,7 @@ public class ServerViewModel : ViewModelBase
     public string ServerRunningStateText =>
         ResourceString.Get(ServerRunningState ? "ServerIsRunningString" : "ServerIsNotRunningString");
 
-    public string ServerIpAddress { get; } = GetLocalIpAddress();
+    public string ServerIpAddress { get; }
 
     public bool IsTcpChecked
     {
@@ -82,10 +95,18 @@ public class ServerViewModel : ViewModelBase
 
     private static string GetLocalIpAddress()
     {
-        var host = Dns.GetHostEntry(Dns.GetHostName());
-        foreach (var ip in host.AddressList)
-            if (ip.AddressFamily == AddressFamily.InterNetwork)
-                return ip.ToString();
+        try
+        {
+            var host = Dns.GetHostEntry(Dns.GetHostName());
+            foreach (var ip in host.AddressList)
+                if (ip.AddressFamily == AddressFamily.InterNetwork)
+                    return ip.ToString();
+        }
+        catch (Exception ex)
+        {
+            Logger.LogMessage($"Cannot get local IP address: {ex.Message}");
+        }
+
         return "undefined";
     }
 
